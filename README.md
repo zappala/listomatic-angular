@@ -1,7 +1,7 @@
-# list-o-matic Ember front-end
+# list-o-matic Angular front-end
 
 A simple list application to demonstrate web development
-concepts. This version uses Ember for the front end.
+concepts. This version uses Angular for the front end.
 
 Currently, the only supported back end is the [List-o-matic Flask Server](https://github.com/zappala/listomatic-flask-server).
 
