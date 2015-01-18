@@ -35,28 +35,26 @@
   </nav>
 
   <div id="content" class="container">
-  </div>
+    <div ng-controller="LoginController">
+      <h2>Login</h2>
+      <form class="form-vertical" ng-submit="login(user)" novalidate>
+	<input type="text" placeholder="Username" ng-model="user.username">
+	<input type="password" placeholder="Password" ng-model="user.password">
+	<input class="btn" type="submit" value="Login">
+	<div ng-if="loginFailed" class="alert">Invalid username or password.</div>
+      </form>
 
-  <div ng-controller="LoginController">
-    <h2>Login</h2>
-    <form class="form-vertical" ng-submit="login(user)" novalidate>
-      <input type="text" placeholder="Username" ng-model="user.username">
-      <input type="password" placeholder="Password" ng-model="user.password">
-      <input class="btn" type="submit" value="Login">
-      <div ng-if="loginFailed" class="alert">Invalid username or password.</div>
-    </form>
+      <p><h3>or</h3></p>
 
-    <p><h3>or</h3></p>
-
-    <h2>Register</h2>
-    <form class="form-vertical">
-      <input type="text" placeholder="Name" ng-model="user.name">
-      <input type="text" placeholder="Username" ng-model="user.username">
-      <input type="password" placeholder="Password" ng-model="user.password">
-      <input class="btn" type="submit" value="Register">
-    </form>
-    <div ng-if="registerFailed" class="alert">Username already taken.</div>
-  </div>
+      <h2>Register</h2>
+      <form class="form-vertical">
+	<input type="text" placeholder="Name" ng-model="user.name">
+	<input type="text" placeholder="Username" ng-model="user.username">
+	<input type="password" placeholder="Password" ng-model="user.password">
+	<input class="btn" type="submit" value="Register">
+      </form>
+      <div ng-if="registerFailed" class="alert">Username already taken.</div>
+    </div>
 
   <p ng-if="currentUser">Lovingly created for <em>{{ currentUser }}</em></p>
   <!--
@@ -101,7 +99,8 @@
       </ul>
     </section>
     -->
-   
+  </div>
+
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
   <script src="js/app.js"></script>
   <script src="js/constants.js"></script>
