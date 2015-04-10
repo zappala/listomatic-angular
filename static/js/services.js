@@ -1,16 +1,33 @@
 var listomaticServices = angular.module('listomaticServices', []);
 
 
-listomaticServices.factory('AuthService', function ($http, Session) {
+listomaticServices.factory('AuthService', function ($http, Session, $rootScope) {
+  var user = {}
   var authService = {};
  
   authService.login = function (credentials) {
     return $http
-	  .post('/users/login', credentials)
+	  .post('/api/users/login', credentials)
 	  .then(function (res) {
-	      alert(res.data.token);
               Session.create(res.data.name, res.data.token);
-	      return "Harry";
+	      return res.data.name;
+	  });
+  };
+
+  authService.register = function (credentials) {
+    return $http
+	  .post('/api/users/register', credentials)
+	  .then(function(res) {
+              Session.create(res.data.name, res.data.token);
+	      return res.data.name;
+	  });
+  };
+
+  authService.logout = function () {
+    return $http
+	  .post('/api/users/logout', {headers: {'Authorization':Session.token}})
+	  .then(function (res) {
+              Session.destroy();
 	  });
   };
  
@@ -27,7 +44,7 @@ listomaticServices.factory('AuthService', function ($http, Session) {
   };
  
   return authService;
-})
+});
 
 
 listomaticServices.service('Session', function () {
@@ -40,4 +57,43 @@ listomaticServices.service('Session', function () {
     this.token = null;
   };
   return this;
-})
+});
+
+listomaticServices.factory('ListService', function ($http, Session) {
+  var listService = {};
+
+  listService.get = function () {
+    return $http
+	  .get('/api/items', {headers: {'Authorization':Session.token}})
+	  .success(function (data,status,headers,config) {
+              return data;
+	  });
+  };
+ 
+  listService.add = function (item) {
+    return $http
+	  .post('/api/items', {item:item}, {headers: {'Authorization':Session.token}})
+	  .then(function (res) {
+              return res.data.item;
+	  });
+  };
+
+  listService.update = function(item) {
+    return $http
+	  .put('/api/items/' + item.id, {item:item}, {headers: {'Authorization':Session.token}})
+	  .then(function(res) {
+	      return res.data.item;
+	  });
+  };
+
+  listService.delete = function(item) {
+    return $http
+	  .delete('/api/items/' + item.id, {headers: {'Authorization':Session.token}})
+	  .then(function(res) {
+	      return 0;
+	  });
+  };
+	
+
+  return listService;
+});

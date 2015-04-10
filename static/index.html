@@ -8,7 +8,7 @@
   <link rel="stylesheet" href="css/app.css" />
 </head>
 
-<body ng-app="listomaticApp" ng-controller="ApplicationController">
+<body ng-app="listomaticApp">
   <nav class="navbar navbar-default" role="navigation">
     <!-- Brand and toggle get grouped for better mobile display -->
     <div class="container">
@@ -24,88 +24,27 @@
 
       <!-- Collect the nav links, forms, and other content for toggling -->
       <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1">
-	<ul ng-if="loggedIn" class="nav navbar-nav">
-	  <li>All</li>
-          <li>Active</li>
-          <li>Completed</li>
-          <li>Logout</li>
+	<ul ng-show="loggedIn" class="nav navbar-nav">
+	  <li><a href="#/list">All</a></li>
+          <li><a href="#/list/active">Active</a></li>
+          <li><a href="#/list/completed">Completed</a></li>
+          <li><a href="#/" ng-submit="logout()">Logout</a></li>
 	</ul>
       </div>
     </div>
   </nav>
 
   <div id="content" class="container">
-    <div ng-controller="LoginController">
-      <h2>Login</h2>
-      <form class="form-vertical" ng-submit="login(user)" novalidate>
-	<input type="text" placeholder="Username" ng-model="user.username">
-	<input type="password" placeholder="Password" ng-model="user.password">
-	<input class="btn" type="submit" value="Login">
-	<div ng-if="loginFailed" class="alert">Invalid username or password.</div>
-      </form>
-
-      <p><h3>or</h3></p>
-
-      <h2>Register</h2>
-      <form class="form-vertical">
-	<input type="text" placeholder="Name" ng-model="user.name">
-	<input type="text" placeholder="Username" ng-model="user.username">
-	<input type="password" placeholder="Password" ng-model="user.password">
-	<input class="btn" type="submit" value="Register">
-      </form>
-      <div ng-if="registerFailed" class="alert">Username already taken.</div>
+    <div ng-view>
     </div>
-
-  <p ng-if="currentUser">Lovingly created for <em>{{ currentUser }}</em></p>
-  <!--
-
-  <section id="todoapp">
-    <header id="header">
-      <div class="row">
-	<div class="col-md-6">
-	  <p>
-	    <span id="list-count" class="label label-default">
-	      <strong>{{remaining}}</strong> {{inflection}}
-	    </span>
-	  </p>
-	  <p><i>Double-click to edit an item</i></p>
-	</div>
-	<div class="col-md-6 right">
-	  {{#if hasCompleted}}
-	  <button class="btn btn-warning btn-md" id="clear-completed" {{action "clearCompleted"}}>Clear completed ({{completed}})
-	  </button>
-	  {{/if}}
-	</div>
-      </div>
-    </header>
-
-    <section id="main">
-      <header id="input">
-	{{ input type="text" id="new-item" placeholder="Enter a new item"
-	value=newTitle action="createItem" }}
-      </header>
-      <ul id="todo-list">
-	{{#each filteredList itemController="item"}}
-	<li {{bind-attr class="completed:completed isEditing:editing"}}>
-	  {{#if isEditing}}
-	  {{edit-item class="edit" value=title focus-out="acceptChanges"
-	  insert-newline="acceptChanges"}}
-	  {{else}}
-	  {{input type="checkbox" checked=completed class="toggle"}}
-	  <label {{action "editItem" on="doubleClick"}}>{{title}}</label><button {{action "removeItem"}} class="destroy"></button>
-	  {{/if}}
-	</li>
-	{{/each}}
-      </ul>
-    </section>
-    -->
   </div>
 
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular.min.js"></script>
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.2.21/angular-route.min.js"></script>
   <script src="js/app.js"></script>
-  <script src="js/constants.js"></script>
   <script src="js/controllers.js"></script>
   <script src="js/services.js"></script>
+  <script src="js/directives.js"></script>
 
 
 </body>

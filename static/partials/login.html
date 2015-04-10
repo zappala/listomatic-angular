@@ -1,0 +1,9 @@
+<div>
+  <h2>Login</h2>
+  <form class="form-vertical" ng-submit="login(user)" novalidate>
+    <input type="text" placeholder="Username" ng-model="user.username">
+    <input type="password" placeholder="Password" ng-model="user.password">
+    <input class="btn" type="submit" value="Login">
+    <div ng-if="loginFailed" class="alert">Invalid username or password.</div>
+  </form>
+</div>
