@@ -153,6 +153,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
     };
 
     $scope.revertEdits = function (item) {
+	console.log('reverting');
 	list[list.indexOf(list)] = $scope.originalItem;
 	$scope.editedItem = null;
 	$scope.originalItem = null;

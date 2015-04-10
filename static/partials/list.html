@@ -33,7 +33,7 @@
 	  <button class="destroy" ng-click="removeItem(item)"></button>
 	</div>
 	<form ng-submit="saveEdits(item, 'submit')">
-	  <input class="edit" ng-trim="false" ng-model="item.title" item-escape="revertEdits(item)" item-focus="item == editedItem">
+	  <input class="edit" ng-trim="false" ng-model="item.title" ng-keypress="revertEdits(item)" item-escape="revertEdits(item)" item-focus="item == editedItem">
 	</form>
       </li>
     </ul>

@@ -1,16 +1,17 @@
 // Create the app as a module, with a list of additional modules it
 // depends on.
 var listomaticApp = angular.module('listomaticApp', [
-  'ngRoute',
-  'listomaticControllers',
-  'listomaticServices',
+    'ngRoute',
+    'listomaticControllers',
+    'listomaticServices',
+    'listomaticDirectives',
 ]);
 
 // Setup routing for the app. Each route contains a template and a
 // controller.
 listomaticApp.config(['$routeProvider',
   function($routeProvider) {
-    $routeProvider.
+      $routeProvider.
       when('/', {
         templateUrl: 'partials/home.html',
         controller: 'ApplicationController'
