@@ -3,49 +3,86 @@ var listomaticControllers = angular.module('listomaticControllers', []);
 
 // The application controller contains the state for the current user that
 // is logged in.
-listomaticControllers.controller('ApplicationController', function ($scope, $rootScope) {
+listomaticControllers.controller('ApplicationController', function ($scope, $rootScope, Session) {
 	$rootScope.loggedIn = false;
 	$rootScope.currentUser = null;
-})
+	if (Session.loggedIn()) {
+		$rootScope.loggedIn = true;
+		$rootScope.currentUser = Session.getName();
+	}
+	console.log("loggedin",$rootScope.loggedIn);
+
+    // logout
+    $scope.logout = function () {
+    	console.log('calling logout');
+    	AuthService.logout().then(function (name) {
+	        // update current user state
+	        $scope.destroy();
+	        // redirect to the home page of the app
+	        $location.path("/");
+	    }, function () {
+	    });
+    };
+
+});
 
 
 // The login controller handles registering, login, and logout of the
 // application. This controller uses the AuthService to do each of these
 // functions, then adjusts state and redirects to the new URL.
-listomaticControllers.controller('LoginController', function ($scope, $location, $rootScope, AuthService) {
+listomaticControllers.controller('LoginController', function ($scope, $location, $rootScope, Session, AuthService) {
     // setup credentials for the login form
     $scope.credentials = {
     	username: '',
     	password: ''
     };
+
+    $scope.save = function(name) {
+    	$rootScope.currentUser = name;
+    	$rootScope.loggedIn = true;
+    };
+    $scope.destroy = function() {
+    	$rootScope.currentUser = null;
+    	$rootScope.loggedIn = false;
+    };
     // register
     $scope.register = function (credentials) {
+    	if (Session.loggedIn()) {
+    		console.log("logged in already");
+    		$location.path("/list");
+    		return;
+    	}
     	AuthService.register(credentials).then(function (name) {
 	        // update current user state
-	        $rootScope.currentUser = name;
-	        $rootScope.loggedIn = true;
+	        $scope.save(name);
 	        // redirect to the main page of the app
 	        $location.path("/list");
 	    }, function () {
+	    	$scope.destroy();
 	    });
     };
     // login
     $scope.login = function (credentials) {
+    	if (Session.loggedIn()) {
+    		console.log("logged in already");
+    		$location.path("/list");
+    		return;
+    	}
     	AuthService.login(credentials).then(function (name) {
 	        // update current user state
-	        $rootScope.currentUser = name;
-	        $rootScope.loggedIn = true;
+	        $scope.save(name);
 	        // redirect to the main page of the app
 	        $location.path("/list");
 	    }, function () {
+	    	$scope.destroy();
 	    });
     };
     // logout
-    $scope.logout = function (credentials) {
+    $scope.logout = function () {
+    	console.log('calling logout');
     	AuthService.logout().then(function (name) {
 	        // update current user state
-	        $rootScope.currentUser = null;
-	        $rootScope.loggedIn = false;
+	        $scope.destroy();
 	        // redirect to the home page of the app
 	        $location.path("/");
 	    }, function () {
@@ -104,7 +141,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 	    	$scope.newItem = '';
 	    	$scope.saving = false;
 	    }, function() {
-	    	alert("failed");
+	    	Scope.destroy();
 	    	$location.path("/");
 	    });
 	};
@@ -138,6 +175,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 	        }, function error() {
 	        	item.title = $scope.originalItem.title
 	        	$scope.editedItem = null;
+	        	Scope.destroy();
 	        	$location.path("/");
 	        });
 	    } else {
@@ -147,6 +185,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 	        	$scope.editedItem = null;
 	        }, function error() {
 	        	$scope.editedItem = null;
+	        	Scope.destroy();
 	        	$location.path("/");
 	        });
 	    }
@@ -163,6 +202,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 		ListService.delete(item).then(function success() {
 			$scope.list.splice($scope.list.indexOf(item), 1);
 		}, function error() {
+			Scope.destroy();
 			$location.path("/");
 		});
 	};
@@ -174,6 +214,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 		ListService.update(item).then(function success() {
 		}, function error() {
 			item.completed = !item.completed;
+			Scope.destroy();
 			$location.path("/");
 		});
 	};
@@ -186,6 +227,7 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 			ListService.delete(item).then(function success() {
 				$scope.list.splice($scope.list.indexOf(item), 1);
 			}, function error() {
+				Scope.destroy();
 				$location.path("/");
 			});
 		});
