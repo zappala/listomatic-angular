@@ -23,14 +23,6 @@ listomaticServices.factory('AuthService', function ($http, Session, $rootScope) 
     });
   };
 
-  authService.logout = function () {
-    return $http
-    .post('/api/users/logout', {headers: {'Authorization':Session.token}})
-    .then(function (res) {
-      Session.destroy();
-    });
-  };
-
   authService.isAuthenticated = function () {
     return !!Session.userId;
   };

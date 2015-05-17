@@ -24,10 +24,6 @@ listomaticApp.config(['$routeProvider',
         templateUrl: 'partials/login.html',
         controller: 'LoginController'
       }).
-      when('/logout', {
-        templateUrl: 'partials/home.html',
-        controller: 'LoginController'
-      }).
       when('/list', {
         templateUrl: 'partials/list.html',
         controller: 'ListController'

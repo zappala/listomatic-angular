@@ -2,41 +2,41 @@
   <header id="header">
     <div class="row">
       <div class="col-md-6">
-	<p><i>Lovingly created for {{currentUser}}</i></p>
-	<p>
-	  <span id="list-count" class="label label-default">
-	    <strong>{{remaining}}</strong>
-	    <ng-pluralize count="remaining" when="{ one: 'item', other: 'items' }"></ng-pluralize>
-	  </span>
-	</p>
-	<p><i>Double-click to edit an item</i></p>
-      </div>
-      <div class="col-md-6 right">
-	<button class="btn btn-warning btn-md" id="clear-completed" ng-click="clearCompletedItems()" ng-show="completed">Clear completed ({{completed}})
-	</button>
-      </div>
-    </div>
-  </header>
+       <p><i>Lovingly created for {{currentUser}}</i></p>
+       <p>
+         <span id="list-count" class="label label-default">
+           <strong>{{remaining}}</strong>
+           <ng-pluralize count="remaining" when="{ one: 'item', other: 'items' }"></ng-pluralize>
+         </span>
+       </p>
+       <p><i>Double-click to edit an item</i></p>
+     </div>
+     <div class="col-md-6 right">
+       <button class="btn btn-warning btn-md" id="clear-completed" ng-click="clearCompletedItems()" ng-show="completed">Clear completed ({{completed}})
+       </button>
+     </div>
+   </div>
+ </header>
 
-  <section id="main">
-    <header id="input">
-      <form id="item-form" name="itemForm" ng-submit="addItem()">
+ <section id="main">
+  <header id="input">
+    <form id="item-form" name="itemForm" ng-submit="addItem()">
       <input type="text" id="new-item" placeholder="Enter a new item"
       value=newTitle ng-model="newItem" ng-disabled="saving" autofocus>
-      </form>
-    </header>
-    <ul id="todo-list">
-      <li ng-repeat="item in list | filter:statusFilter track by $index" ng-class="{completed: item.completed, editing: item == editedItem}">
-	<div class="view">
-	  <input id={{item.id}} class="toggle" type="checkbox" ng-model="item.completed" ng-change="toggleCompleted(item)"/>
-	  <label class="check" for={{item.id}}></label>
-	  <label ng-dblclick="editItem(item)">{{item.title}}</label>
-	  <button class="destroy" ng-click="removeItem(item)"></button>
-	</div>
-	<form ng-submit="saveEdits(item, 'submit')">
-	  <input class="edit" ng-trim="false" ng-model="item.title" ng-keypress="revertEdits(item)" item-escape="revertEdits(item)" item-focus="item == editedItem">
-	</form>
-      </li>
-    </ul>
-  </section>
+    </form>
+  </header>
+  <ul id="todo-list">
+    <li ng-repeat="item in list | filter:statusFilter track by $index" ng-class="{completed: item.completed, editing: item == editedItem}">
+     <div class="view">
+       <input id={{item.id}} class="toggle" type="checkbox" ng-model="item.completed" ng-change="toggleCompleted(item)"/>
+       <label class="check" for={{item.id}}></label>
+       <label ng-dblclick="editItem(item)">{{item.title}}</label>
+       <button class="destroy" ng-click="removeItem(item)"></button>
+     </div>
+     <form ng-submit="saveEdits(item, 'submit')">
+       <input class="edit" ng-trim="false" ng-model="item.title" ng-keypress="revertEdits(item)" item-escape="revertEdits(item)" item-focus="item == editedItem">
+     </form>
+   </li>
+ </ul>
+</section>
 </section>

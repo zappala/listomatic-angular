@@ -3,31 +3,26 @@ var listomaticControllers = angular.module('listomaticControllers', []);
 
 // The application controller contains the state for the current user that
 // is logged in.
-listomaticControllers.controller('ApplicationController', function ($scope, $rootScope, Session) {
+listomaticControllers.controller('ApplicationController', function ($scope, $location, $rootScope, Session, AuthService) {
 	$rootScope.loggedIn = false;
 	$rootScope.currentUser = null;
 	if (Session.loggedIn()) {
 		$rootScope.loggedIn = true;
 		$rootScope.currentUser = Session.getName();
 	}
-	console.log("loggedin",$rootScope.loggedIn);
 
     // logout
     $scope.logout = function () {
-    	console.log('calling logout');
-    	AuthService.logout().then(function (name) {
-	        // update current user state
-	        $scope.destroy();
-	        // redirect to the home page of the app
-	        $location.path("/");
-	    }, function () {
-	    });
+    	$rootScope.loggedIn = false;
+    	Session.destroy();
+        // redirect to the home page of the app
+        $location.path("/");
     };
 
 });
 
 
-// The login controller handles registering, login, and logout of the
+// The login controller handles registering and login of the
 // application. This controller uses the AuthService to do each of these
 // functions, then adjusts state and redirects to the new URL.
 listomaticControllers.controller('LoginController', function ($scope, $location, $rootScope, Session, AuthService) {
@@ -48,7 +43,6 @@ listomaticControllers.controller('LoginController', function ($scope, $location,
     // register
     $scope.register = function (credentials) {
     	if (Session.loggedIn()) {
-    		console.log("logged in already");
     		$location.path("/list");
     		return;
     	}
@@ -64,7 +58,6 @@ listomaticControllers.controller('LoginController', function ($scope, $location,
     // login
     $scope.login = function (credentials) {
     	if (Session.loggedIn()) {
-    		console.log("logged in already");
     		$location.path("/list");
     		return;
     	}
@@ -77,24 +70,20 @@ listomaticControllers.controller('LoginController', function ($scope, $location,
 	    	$scope.destroy();
 	    });
     };
-    // logout
-    $scope.logout = function () {
-    	console.log('calling logout');
-    	AuthService.logout().then(function (name) {
-	        // update current user state
-	        $scope.destroy();
-	        // redirect to the home page of the app
-	        $location.path("/");
-	    }, function () {
-	    });
-    };
 });
 
 
 // The list controller handles manipulation of the todo list.  This
 // controller uses the ListService to add, remove, and edit items in
 // the list.
-listomaticControllers.controller('ListController', function ($scope, $location, $routeParams, $filter, ListService) {
+listomaticControllers.controller('ListController', function ($scope, $rootScope, $location, $routeParams, $filter, Session, ListService) {
+	$rootScope.loggedIn = false;
+	$rootScope.currentUser = null;
+	if (Session.loggedIn()) {
+		$rootScope.loggedIn = true;
+		$rootScope.currentUser = Session.getName();
+	}
+
     // local model for the list
     $scope.list = [];
     var list = $scope.list;
@@ -240,4 +229,5 @@ listomaticControllers.controller('ListController', function ($scope, $location, 
 			}
 		});
 	};
+
 });
